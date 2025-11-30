@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Cadastro de Peças Automotivas</title>
+<style>
+:root {
+  --bg:#f7f8fb;
+  --card:#ffffff;
+  --accent:#0f62fe;
+  --muted:#6b7280;
+  --radius:12px;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+body {
+  margin:0;
+  padding:24px;
+  background:linear-gradient(180deg,var(--bg),#eef2ff);
+  color:#111827;
+}
+.container {
+  max-width:1300px;
+  margin:0 auto;
+}
+header {
+  display:flex;
+  align-items:center;
+  gap:16px;
+  margin-bottom:18px;
+}
+header h1 { margin:0; font-size:1.4rem; }
+.main-grid {
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:20px;
+}
+.card {
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:18px;
+  box-shadow:0 6px 18px rgba(15,34,58,0.06);
+}
+form.card {
+  display:grid;
+  gap:16px;
+}
+.full { grid-column: 1 / -1; }
+label { display:block; font-size:.88rem; margin-bottom:6px; color:var(--muted); }
+input[type="text"], input[type="number"], input[type="date"], select, textarea {
+  width:100%;
+  padding:10px 12px;
+  border:1px solid #e6e9ef;
+  border-radius:8px;
+  font-size:0.95rem;
+  box-sizing:border-box;
+  background:#fff;
+}
+textarea { min-height:100px; resize:vertical; }
+.field { margin-bottom:12px; }
+.inline-row { display:flex; gap:12px; }
+.inline-row .field { flex:1; margin-bottom:0; }
+.small { font-size:.82rem; color:var(--muted); margin-top:6px; }
+.btn {
+  background:var(--accent);
+  color:#fff;
+  border:none;
+  padding:10px 14px;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:600;
+}
+.btn.secondary {
+  background:#eef2ff;
+  color:var(--accent);
+  border:1px solid #d6e4ff;
+}
+.table-container {
+  overflow-x:auto;
+}
+table {
+  width:100%;
+  border-collapse:collapse;
+  font-size:0.93rem;
+}
+th, td {
+  text-align:left;
+  padding:10px 8px;
+  border-bottom:1px solid #e9eef8;
+}
+th {
+  background:#f3f6ff;
+  font-weight:600;
+  color:#374151;
+}
+tr:hover {
+  background:#f9fbff;
+}
+@media (max-width:880px) {
+  .main-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Cadastro de Peças Automotivas</h1>
+    <div style="color:var(--muted);font-size:.95rem">Formulário para registrar peças no estoque</div>
+  </header>
+
+  <div class="main-grid">
+		<!-- FORMULÁRIO -->
+		<form id="cadForm" class="card" autocomplete="off">
+			<div class="field full">
+				<label for="nome">Nome da peça *</label>
+				<input id="nome" name="nome" type="text" placeholder="Ex.: Pastilha de freio dianteira" />
+				<div class="small">Informe um nome claro da peça.</div>
+			</div>
+
+			<div class="inline-row">
+				<div class="field">
+					<label for="sku">Código interno / SKU</label>
+					<input id="sku" name="sku" type="text" placeholder="Ex.: PF-1234" />
+				</div>
+				<div class="field">
+					<label for="marca">Fabricante</label>
+					<input id="marca" name="marca" type="text" placeholder="Ex.: Bosch, Nakata, Cofap" />
+				</div>
+			</div>
+
+			<div class="inline-row">
+				<div class="field">
+					<label for="categoria">Categoria *</label>
+					<select id="categoria" name="categoria">
+						<option value="">Selecione</option>
+						<option value="motor">Motor</option>
+						<option value="freios">Freios</option>
+						<option value="suspensao">Suspensão</option>
+						<option value="eletrica">Elétrica</option>
+						<option value="transmissao">Transmissão</option>
+						<option value="acessorios">Acessórios</option>
+					</select>
+				</div>
+				<div class="field">
+					<label for="veiculo">Veículo compatível</label>
+					<input id="veiculo" name="veiculo" type="text" placeholder="Ex.: Onix 2018, Corolla 2015" />
+				</div>
+			</div>
+
+			<div class="inline-row">
+				<div class="field">
+					<label for="preco">Preço (R$) *</label>
+					<input id="preco" name="preco" type="number" step="0.01" min="0" placeholder="Ex.: 159.90" />
+				</div>
+				<div class="field">
+					<label for="quantidade">Quantidade em estoque *</label>
+					<input id="quantidade" name="quantidade" type="number" min="0" placeholder="Ex.: 12" />
+				</div>
+			</div>
+
+			<div class="field">
+				<label for="cod_barras">Código de barras / EAN</label>
+				<input id="cod_barras" name="cod_barras" type="text" placeholder="Ex.: 7891234567890" />
+			</div>
+
+			<div class="field">
+				<label for="descricao">Descrição</label>
+				<textarea id="descricao" name="descricao" placeholder="Detalhes da peça, compatibilidade, observações..."></textarea>
+			</div>
+
+			<div class="field">
+				<label for="tags">Tags (separadas por vírgula)</label>
+				<input id="tags" name="tags" type="text" placeholder="Ex.: freio, pastilha, dianteira" />
+			</div>
+
+			<div class="inline-row">
+				<div class="field">
+					<label for="data_cadastro">Data de cadastro</label>
+					<input id="data_cadastro" name="data_cadastro" type="date" />
+				</div>
+				<div class="field">
+					<label for="ativo">Disponível para venda</label>
+					<select id="ativo" name="ativo">
+						<option value="true">Sim</option>
+						<option value="false">Não</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="field full" style="margin-top:6px;">
+				<button type="submit" class="btn">Salvar peça</button>
+				<button type="button" id="limpar" class="btn secondary" style="margin-left:8px;">Limpar</button>
+			</div>
+		</form>
+
+		<!-- TABELA -->
+		<div class="card table-container">
+		<h2 style="margin-top:0;">Estoque de Peças</h2>
+		<table>
+			<thead>
+			<tr>
+				<th>Peça</th>
+				<th>Categoria</th>
+				<th>Veículo</th>
+				<th>Preço</th>
+				<th>Qtd</th>
+				<th>Disponível</th>
+			</tr>
+			</thead>
+			<tbody id="tabelaRoupas">
+			</tbody>
+		</table>
+		</div>
+	</div>
+</div>
+
+<script>
+	document.getElementById('cadForm').addEventListener('submit', function(event) {
+		event.preventDefault();
+
+		const payload = {
+			nome: nome.value,
+			sku: sku.value,
+			marca: marca.value,
+			categoria: categoria.value,
+			veiculo: veiculo.value,
+			preco: preco.value,
+			quantidade: quantidade.value,
+			cod_barras: cod_barras.value,
+			descricao: descricao.value,
+			tags: tags.value,
+			data_cadastro: data_cadastro.value,
+			ativo: ativo.value
+		};
+
+		fetch('http://localhost:3000/cadastrar', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(payload)
+		})
+		.then(res => res.json())
+		.then(data => console.log('Sucesso:', data))
+		.catch(err => console.error('Erro:', err));
+	});
+
+	// Listagem
+	fetch('http://localhost:3000/listar')
+	.then(res => res.json())
+	.then(data => {
+		let html = '';
+		data.forEach(p => {
+			html += `
+			<tr>
+				<td>${p.nome}</td>
+				<td>${p.categoria}</td>
+				<td>${p.veiculo ?? '-'}</td>
+				<td>R$ ${p.preco}</td>
+				<td>${p.quantidade}</td>
+				<td>${p.ativo == 1 ? 'Sim' : 'Não'}</td>
+			</tr>`;
+		});
+		document.getElementById('tabelaRoupas').innerHTML = html;
+	});
+</script>
+</body>
+</html>
